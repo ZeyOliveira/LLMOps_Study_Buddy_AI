@@ -2,5 +2,5 @@ logs/
 .venv/
 .env
 llmops_gitops_study_buddy_ai.egg-info/
-monitoring.results/
+monitoring/results/
 arquivos_prof/

@@ -1,0 +1,21 @@
+# --- Legado e Referências ---
+arquivos_prof/
+
+# --- Python & Cache ---
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+llmops_gitops_study_buddy_ai.egg-info/
+
+# --- Segredos (Crucial) ---
+.env
+.git
+.gitignore
+monitoring/results/
+.ipynb_checkpoints/
+
+# --- Dados Dinâmicos ---
+logs/
+# --- Scripts de Teste Locais ---
+teste_me.py

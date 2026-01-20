@@ -1,5 +1,7 @@
 langchain
-langchain-groq
+langchain_groq
 pandas
 streamlit
 python-dotenv
+setuptools
+langchain_openai

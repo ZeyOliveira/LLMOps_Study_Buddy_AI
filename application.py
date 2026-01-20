@@ -1,9 +1,9 @@
 import os
 import streamlit as st
-from dotenv import load_dotenv
-from src.utils.helpers import *
-from src.generator.question_generator import QuestionGenerator
-load_dotenv()
+from dotenv import load_dotenv, find_dotenv
+from src.common.helpers import *
+from src.generation.question_generator import QuestionGenerator
+load_dotenv(find_dotenv())
 
 
 def main():

@@ -28,8 +28,8 @@ spec:
         fsGroup: 2000
 
       containers:
-      - name: llmops-app-container
-        image: studybuddy-dockerhub/llmops-app:latest 
+      - name: llmops-app
+        image: zey123/studybuddy:latest 
         imagePullPolicy: Always
         
         ports:

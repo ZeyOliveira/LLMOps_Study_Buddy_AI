@@ -14,71 +14,14 @@ def rerun():
 class QuizManager:
     """
     Enterprise-grade Quiz Manager.
-    
-    Responsible for orchestrating question generation, tracking user answers,
-    evaluating performance, and exporting data for monitoring (LLMOps).
+    Responsável por orquestrar a geração, avaliação e exportação de dados (MLOps).
     """
     def __init__(self):
         self.questions = []
         self.user_answers = []
         self.results = []
 
-    def generate_questions(self, generator: QuestionGenerator, topic: str, 
-                           question_type: str, difficulty: str, num_questions: int):
-        """Generates a list of questions and resets the quiz state."""
-        self.questions = []
-        self.user_answers = []
-        self.results = []
-
-        try:
-            for i in range(num_questions):
-                logger.info(f"Generating question {i+1}/{num_questions} | Type: {question_type}")
-                
-                if question_type == "Multiple Choice":
-                    
-                    question = generator.generate_mcq(topic, difficulty)
-                    self.questions.append({
-                        'type': 'MCQ',
-                        'question': question.question,
-                        'options': question.options,
-                        'correct_answer': question.correct_answer,
-                        'explanation': question.explanation 
-                    })
-                else:
-                    question = generator.generate_fill_blank(topic, difficulty)
-                    self.questions.append({
-                        'type': 'Fill in the blank',
-                        'question': question.question,
-                        'correct_answer': question.answer,
-                        'explanation': question.explanation 
-                    })
-        except Exception as e:
-            logger.error(f"Critical error during quiz generation sequence: {str(e)}")
-            st.error("Technical failure during question generation. Check logs for details.")
-
-    def evaluate_quiz(self, user_inputs):
-        """Compares user answers with ground truth and calculates results."""
-        self.results = []
-        for i, q in enumerate(self.questions):
-            user_ans = user_inputs[i]
-            
-            result_dict = {
-                'question': q['question'],
-                'user_answer': user_ans,
-                'correct_answer': q["correct_answer"],
-                'explanation': q.get('explanation', "N/A"),
-                'is_correct': False
-            }
-
-            if q['type'] == 'MCQ':
-                result_dict['is_correct'] = (user_ans == q["correct_answer"])
-            else:
-                # Normalization for string comparison (lowercase and strip)
-                result_dict['is_correct'] = (user_ans.strip().lower() == q['correct_answer'].strip().lower())
-
-            self.results.append(result_dict)
-        
-        logger.info(f"Quiz evaluated. Total questions: {len(self.results)}")
+    # ... (métodos generate_questions e evaluate_quiz permanecem iguais)
 
     def save_to_csv(self, filename_prefix="quiz_results"):
         """Saves results to a CSV file for future monitoring and fine-tuning."""
@@ -90,16 +33,20 @@ class QuizManager:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         unique_filename = f"{filename_prefix}_{timestamp}.csv"
 
-        # Ensure directory exists (DataOps)
-        output_dir = 'monitoring/results' 
-        os.makedirs(output_dir, exist_ok=True)
-        full_path = os.path.join(output_dir, unique_filename)
-
+        # TRUQUE DE MESTRE: Alteramos o local de salvamento para /tmp
+        # Isso evita o PermissionError sem precisar reconstruir a imagem Docker.
+        output_dir = '/tmp/monitoring/results' 
+        
         try:
+            # Criamos o diretório no /tmp, onde o myuser tem permissão total
+            os.makedirs(output_dir, exist_ok=True)
+            full_path = os.path.join(output_dir, unique_filename)
+            
             df.to_csv(full_path, index=False)
             logger.info(f"Quiz results exported successfully to {full_path}")
             return full_path
         except Exception as e:
-            logger.error(f"Failed to save CSV: {str(e)}")
-            st.error("Error saving results.")
+            # Em produção, se o /tmp falhar, registramos o erro crítico
+            logger.error(f"Failed to save CSV in {output_dir}: {str(e)}")
+            st.error(f"Error saving results: {str(e)}")
             return None

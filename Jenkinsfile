@@ -1,5 +1,5 @@
 pipeline {
-    // agent any
+    agent any
     // environment {
     //     DOCKER_HUB_REPO = "dataguru97/studybuddy"
     //     DOCKER_HUB_CREDENTIALS_ID = "dockerhub-token"
@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout Github') {
             steps {
                 echo 'Checking out code from GitHub...'
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/data-guru0/STUDY-BUDDY-AI.git']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/ZeyOliveira/LLMOps_Study_Buddy_AI.git']])
             }
         }        
         // stage('Build Docker Image') {

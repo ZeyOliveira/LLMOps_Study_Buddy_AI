@@ -5,7 +5,7 @@ from datetime import datetime
 from src.generation.question_generator import QuestionGenerator
 from utils.logger import get_logger
 
-logger = get_logger("Helpers")
+logger = get_logger(__name__)
 
 def rerun():
     """Triggers a rerun in Streamlit session state."""

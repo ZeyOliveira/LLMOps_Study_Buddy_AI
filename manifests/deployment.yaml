@@ -29,7 +29,7 @@ spec:
 
       containers:
       - name: llmops-app
-        image: zey123/studybuddy:v6
+        image: zey123/studybuddy:v7
         imagePullPolicy: Always
         
         ports:

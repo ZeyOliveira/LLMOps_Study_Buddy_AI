@@ -4,6 +4,9 @@ from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 from utils.logger import get_logger
 from utils.custom_exception import AppException
+from dotenv import load_dotenv, find_dotenv
+
+
 
 class LLMClient:
     """
@@ -15,9 +18,10 @@ class LLMClient:
     """
 
     def __init__(self, config_path: str = "config/llm.yaml"):
+        load_dotenv(find_dotenv())
         self.logger = get_logger(self.__class__.__name__)
         self.config = self._load_config(config_path)
-        self.provider = self.config.get("default_provider", "groq")
+        self.provider = self.config.get("default_provider", "openai")
         self.llm = self._setup_llm()
 
     def _load_config(self, path: str) -> dict:

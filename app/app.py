@@ -6,7 +6,6 @@ from src.generation.question_generator import QuestionGenerator
 from utils.logger import get_logger
 
 # Professional environment setup
-load_dotenv(find_dotenv())
 logger = get_logger(__name__)
 
 def main():
